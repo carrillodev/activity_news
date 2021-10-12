@@ -12,5 +12,5 @@ public interface NewPersistencePort {
     New getNew(UUID id);
     Page<New> getNews(Pageable pageable);
     New updateNew(NewUpdateDto newUpdateDto, UUID id);
-    New createNew(NewCreateDto newCreateDto);
+    New createNew(NewCreateDto newCreateDto, UUID authorId);
 }
