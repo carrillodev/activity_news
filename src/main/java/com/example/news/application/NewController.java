@@ -6,6 +6,7 @@ import com.example.news.domain.data.NewShortDto;
 import com.example.news.domain.data.NewUpdateDto;
 import com.example.news.domain.ports.api.NewServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,5 +50,10 @@ public class NewController {
     @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<NewDetailDto> updateNew(@ModelAttribute NewUpdateDto newUpdateDto, @PathVariable UUID id) {
         return new ResponseEntity<>(newServicePort.updateNew(newUpdateDto, id), HttpStatus.OK);
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        return new ResponseEntity<>(newServicePort.getImage(filename), HttpStatus.OK);
     }
 }
