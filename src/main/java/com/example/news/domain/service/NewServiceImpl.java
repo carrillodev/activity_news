@@ -5,7 +5,9 @@ import com.example.news.domain.ports.api.NewServicePort;
 import com.example.news.domain.ports.spi.NewPersistencePort;
 import com.example.news.infraestructure.entity.New;
 import com.example.news.infraestructure.mappers.NewMapper;
+import com.example.news.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ import java.util.UUID;
 
 public class NewServiceImpl implements NewServicePort {
     private NewPersistencePort newPersistencePort;
+
+    @Autowired
+    private StorageService storageService;
 
     @Autowired
     public NewServiceImpl(NewPersistencePort newPersistencePort) {
@@ -69,6 +74,11 @@ public class NewServiceImpl implements NewServicePort {
         NewDetailDto newDetail = NewMapper.INSTANCE.newToNewDetailDto(createdNew);
         newDetail.setIdAuthor(author);
         return newDetail;
+    }
+
+    @Override
+    public Resource getImage(String filename) {
+        return storageService.loadAsResource(filename);
     }
 
     private AuthorDto getAuthor(UUID id) {
